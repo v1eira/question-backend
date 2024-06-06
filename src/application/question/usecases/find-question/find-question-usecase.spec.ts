@@ -14,7 +14,6 @@ const QuestionMockRepository = (): QuestionRepositoryInterface => {
     findByID: vitest.fn().mockImplementation(id => id === 'questionID'
       ? aQuestion.withId('questionID').build()
       : null),
-    findAskerQuestions: vitest.fn(),
     findRecipientQuestions: vitest.fn(),
     findAll: vitest.fn(),
     delete: vitest.fn()

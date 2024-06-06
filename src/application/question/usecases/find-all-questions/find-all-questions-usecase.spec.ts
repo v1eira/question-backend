@@ -11,7 +11,6 @@ const MockRepository = (): QuestionRepositoryInterface => {
   return {
     create: vitest.fn(),
     findByID: vitest.fn(),
-    findAskerQuestions: vitest.fn(),
     findRecipientQuestions: vitest.fn(),
     findAll: vitest.fn().mockReturnValue([
       aQuestion
