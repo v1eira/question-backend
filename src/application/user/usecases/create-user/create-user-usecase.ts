@@ -4,8 +4,9 @@ import { User } from '../../../../domain/user/entity/user'
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { bcryptConfig } from '../../../../infrastructure/config/bcrypt'
 import { type CreateUserInputDTO } from './create-user-dto'
+import type CreateUserUsecaseInterface from './create-user-usecase.interface'
 
-export default class CreateUserUsecase {
+export default class CreateUserUsecase implements CreateUserUsecaseInterface {
   private readonly userRepository: UserRepositoryInterface
 
   constructor (userRepository: UserRepositoryInterface) {
