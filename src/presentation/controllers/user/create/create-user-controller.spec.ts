@@ -1,4 +1,4 @@
-import { describe, expect, it, vitest } from 'vitest'
+import { afterEach, describe, expect, it, vitest } from 'vitest'
 import CreateUserController from './create-user-controller'
 import type CreateUserUsecaseInterface from '../../../../application/user/usecases/create-user/create-user-usecase.interface'
 
@@ -12,34 +12,50 @@ describe('CreateUserController', () => {
   const usecase = MockUseCase()
   const createUserController = new CreateUserController(usecase)
 
-  it('Should create an user', async () => {
-    const input = {
-      fullName: 'any_name',
-      username: 'any_username',
-      email: 'any_email',
-      password: 'any_password',
-      summary: 'any_summary',
-      location: 'any_location'
-    }
-    await createUserController.handle(input)
-    expect(usecase.execute).toHaveBeenCalledWith(input)
-    expect(usecase.execute).toHaveBeenCalledTimes(1)
+  afterEach(() => {
+    vitest.clearAllMocks()
   })
 
-  it('Should throw if usecase throws', async () => {
-    const input = {
-      fullName: 'any_name',
-      username: 'any_username',
-      email: 'any_email',
-      password: 'any_password',
-      summary: 'any_summary',
-      location: 'any_location'
+  it('Should create an user', async () => {
+    const httpRequest = {
+      body: {
+        fullName: 'any_name',
+        username: 'any_username',
+        email: 'any_email',
+        password: 'any_password',
+        summary: 'any_summary',
+        location: 'any_location'
+      }
     }
+    const response = await createUserController.handle(httpRequest)
+    expect(usecase.execute).toHaveBeenCalledWith(httpRequest.body)
+    expect(usecase.execute).toHaveBeenCalledTimes(1)
+    expect(response.statusCode).toBe(201)
+    expect(response.body).toEqual({})
+  })
+
+  it('Should return body with error if usecase throws', async () => {
+    const httpRequest = {
+      body: {
+        fullName: 'any_name',
+        username: 'any_username',
+        email: 'any_email',
+        password: 'any_password',
+        summary: 'any_summary',
+        location: 'any_location'
+      }
+    }
+
     vitest
       .spyOn(usecase, 'execute')
       .mockImplementationOnce(() => {
         throw new Error()
       })
-    await expect(createUserController.handle(input)).rejects.toThrow()
+
+    const response = await createUserController.handle(httpRequest)
+    expect(usecase.execute).toHaveBeenCalledWith(httpRequest.body)
+    expect(usecase.execute).toHaveBeenCalledTimes(1)
+    expect(response.statusCode).not.toBe(201)
+    expect(response.body).toHaveProperty('error')
   })
 })

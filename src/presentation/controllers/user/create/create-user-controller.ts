@@ -1,13 +1,6 @@
 import type CreateUserUsecaseInterface from '../../../../application/user/usecases/create-user/create-user-usecase.interface'
-
-export interface CreateUserControllerInputDTO {
-  fullName: string
-  username: string
-  email: string
-  password: string
-  summary?: string
-  location?: string
-}
+import makeHttpErrorResponse from '../../../helpers/http-error-response'
+import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
 
 export default class CreateUserController {
   private readonly createUserUseCase: CreateUserUsecaseInterface
@@ -16,7 +9,23 @@ export default class CreateUserController {
     this.createUserUseCase = createUserUseCase
   }
 
-  async handle (input: CreateUserControllerInputDTO): Promise<void> {
-    await this.createUserUseCase.execute(input)
+  async handle (request: HttpRequest): Promise<HttpResponse> {
+    try {
+      const input = {
+        fullName: request.body.fullName,
+        username: request.body.username,
+        email: request.body.email,
+        password: request.body.password,
+        summary: request.body.summary,
+        location: request.body.location
+      }
+      await this.createUserUseCase.execute(input)
+      return {
+        statusCode: 201,
+        body: {}
+      }
+    } catch (error) {
+      return makeHttpErrorResponse(error as Error)
+    }
   }
 }
