@@ -3,8 +3,10 @@ import { type User } from '../../../../domain/user/entity/user'
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { bcryptConfig } from '../../../../infrastructure/config/bcrypt'
 import { type UpdateUserInputDTO } from './update-user-dto'
+import type UpdateUserUsecaseInterface from './update-user-usecase.interface'
+import { ConflictError, InvalidRequestError, NotFoundError } from '../../../../domain/error/errors'
 
-export default class UpdateUserUsecase {
+export default class UpdateUserUsecase implements UpdateUserUsecaseInterface {
   private readonly userRepository: UserRepositoryInterface
 
   constructor (userRepository: UserRepositoryInterface) {
@@ -14,20 +16,20 @@ export default class UpdateUserUsecase {
   async execute (input: UpdateUserInputDTO): Promise<void> {
     const user = await this.userRepository.findByID(input.id)
     if (user == null) {
-      throw new Error('User not found')
+      throw new NotFoundError('User not found')
     }
 
     if (input.username != null) {
       const findUser = await this.userRepository.findByUsername(input.username)
       if (findUser != null && findUser.id !== user.id) {
-        throw new Error('Username already in use')
+        throw new ConflictError('Username already in use')
       }
     }
 
     if (input.newPassword != null && input.currentPassword != null) {
       const correctPassword = await bcrypt.compare(input.currentPassword, user.passwordHash)
       if (!correctPassword) {
-        throw new Error('Wrong current password')
+        throw new InvalidRequestError('Wrong current password')
       }
     }
 
@@ -37,12 +39,14 @@ export default class UpdateUserUsecase {
   }
 
   private async updateFields (user: User, input: UpdateUserInputDTO): Promise<void> {
-    input.fullName != null && user.changeFullName(input.fullName)
-    input.username != null && user.changeUsername(input.username)
-    input.newPassword != null && user.changePasswordHash(await bcrypt.hash(input.newPassword, bcryptConfig.saltRounds))
-    input.summary != null && user.changeSummary(input.summary)
-    input.location != null && user.changeLocation(input.location)
-    input.profileLocked === true ? user.lockProfile() : user.unlockProfile()
+    input.fullName !== undefined && user.changeFullName(input.fullName)
+    input.username !== undefined && user.changeUsername(input.username)
+    input.newPassword !== undefined && user.changePasswordHash(await bcrypt.hash(input.newPassword, bcryptConfig.saltRounds))
+    input.summary !== undefined && user.changeSummary(input.summary)
+    input.location !== undefined && user.changeLocation(input.location)
+    if (input.profileLocked !== undefined) {
+      input.profileLocked ? user.lockProfile() : user.unlockProfile()
+    }
     user.setUpdatedAt(new Date())
   }
 }
