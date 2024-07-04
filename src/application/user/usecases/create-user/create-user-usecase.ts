@@ -5,6 +5,7 @@ import type UserRepositoryInterface from '../../../../domain/user/repository/use
 import { bcryptConfig } from '../../../../infrastructure/config/bcrypt'
 import { type CreateUserInputDTO } from './create-user-dto'
 import type CreateUserUsecaseInterface from './create-user-usecase.interface'
+import { ConflictError } from '../../../../domain/error/errors'
 
 export default class CreateUserUsecase implements CreateUserUsecaseInterface {
   private readonly userRepository: UserRepositoryInterface
@@ -33,12 +34,12 @@ export default class CreateUserUsecase implements CreateUserUsecaseInterface {
   private async checkIfUserAlreadyExists (input: CreateUserInputDTO): Promise<void> {
     let findUser = await this.userRepository.findByUsername(input.username)
     if (findUser !== null) {
-      throw new Error('Username already in use')
+      throw new ConflictError('Username already in use')
     }
 
     findUser = await this.userRepository.findByEmail(input.email)
     if (findUser !== null) {
-      throw new Error('Email already in use')
+      throw new ConflictError('Email already in use')
     }
   }
 }

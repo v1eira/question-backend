@@ -66,4 +66,21 @@ describe('FindUserController', () => {
     expect(response.body).toHaveProperty('error')
     expect(response.body.error).toBe('User not found')
   })
+
+  it('Should return body with statusCode 500 if unexpected error occurs', async () => {
+    const httpRequest = {
+      params: {
+        id: 'any_id'
+      }
+    }
+
+    vitest.spyOn(usecase, 'execute').mockImplementationOnce(() => { throw new Error('Unexpected error') })
+
+    const response = await findUserController.handle(httpRequest)
+
+    expect(usecase.execute).toHaveBeenCalledWith(httpRequest.params)
+    expect(usecase.execute).toHaveBeenCalledTimes(1)
+    expect(response.statusCode).toBe(500)
+    expect(response.body).toHaveProperty('error')
+  })
 })
