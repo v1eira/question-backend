@@ -18,10 +18,3 @@ export class InvalidRequestError extends Error {
     this.name = 'InvalidRequestError'
   }
 }
-
-export class ServerError extends Error {
-  constructor (message: string) {
-    super(message)
-    this.name = 'ServerError'
-  }
-}
