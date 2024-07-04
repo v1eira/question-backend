@@ -1,7 +1,9 @@
+import { NotFoundError } from '../../../../domain/error/errors'
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { type FindUserInputDTO, type FindUserOutputDTO } from './find-user-dto'
+import type FindUserUsecaseInterface from './find-user-usecase.interface'
 
-export default class FindUserUsecase {
+export default class FindUserUsecase implements FindUserUsecaseInterface {
   private readonly userRepository: UserRepositoryInterface
 
   constructor (userRepository: UserRepositoryInterface) {
@@ -11,7 +13,7 @@ export default class FindUserUsecase {
   async execute (input: FindUserInputDTO): Promise<FindUserOutputDTO> {
     const user = await this.userRepository.findByID(input.id)
     if (user === null) {
-      throw new Error('User not found')
+      throw new NotFoundError('User not found')
     }
     return {
       id: user.id,
