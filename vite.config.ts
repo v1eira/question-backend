@@ -2,6 +2,9 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    cache: false
+    cache: false,
+    coverage: {
+      provider: 'v8'
+    }
   }
 })

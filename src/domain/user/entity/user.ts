@@ -79,6 +79,9 @@ export class User {
   }
 
   setFollowersCount (followersCount: number): void {
+    if (followersCount < 0) {
+      throw new Error('Followers count cant be less than 0')
+    }
     this._followersCount = followersCount
   }
 
@@ -87,6 +90,9 @@ export class User {
   }
 
   setFollowingCount (followingCount: number): void {
+    if (followingCount < 0) {
+      throw new Error('Following count cant be less than 0')
+    }
     this._followingCount = followingCount
   }
 
@@ -95,6 +101,9 @@ export class User {
   }
 
   setLikedAnswersCount (likedAnswersCount: number): void {
+    if (likedAnswersCount < 0) {
+      throw new Error('Liked answers count cant be less than 0')
+    }
     this._likedAnswersCount = likedAnswersCount
   }
 

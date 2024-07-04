@@ -35,9 +35,7 @@ describe('Create User Usecase tests', () => {
       fullName: 'New User',
       username: 'newuser',
       email: 'newuser@email.com',
-      password: '123456',
-      summary: 'Hello world!',
-      location: 'NY, USA'
+      password: '123456'
     }
 
     await createUserUsecase.execute(createUserInput)
@@ -52,8 +50,8 @@ describe('Create User Usecase tests', () => {
       _username: 'newuser',
       _email: 'newuser@email.com',
       _passwordHash: expect.any(String),
-      _summary: 'Hello world!',
-      _location: 'NY, USA',
+      _summary: '',
+      _location: '',
       _profileLocked: false,
       _followersCount: 0,
       _followingCount: 0,

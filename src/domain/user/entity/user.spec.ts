@@ -104,6 +104,23 @@ describe('User entity tests', () => {
     expect(user.followersCount).toEqual(5)
   })
 
+  it('should not create user with negative followers count', () => {
+    expect(() => {
+      anUser.withFollowersCount(-5).build()
+    }).toThrow('Followers count cant be less than 0')
+  })
+
+  it('should not change followers count if value is negative', () => {
+    const user = anUser.withFollowersCount(0).build()
+
+    expect(user).toBeInstanceOf(User)
+    expect(user.followersCount).toEqual(0)
+
+    expect(() => {
+      user.setFollowersCount(-5)
+    }).toThrow('Followers count cant be less than 0')
+  })
+
   it('should change following count', () => {
     const user = anUser.withFollowingCount(0).build()
 
@@ -114,6 +131,23 @@ describe('User entity tests', () => {
     expect(user.followingCount).toEqual(5)
   })
 
+  it('should not create user with negative following count', () => {
+    expect(() => {
+      anUser.withFollowingCount(-5).build()
+    }).toThrow('Following count cant be less than 0')
+  })
+
+  it('should not change following count if value is negative', () => {
+    const user = anUser.withFollowingCount(0).build()
+
+    expect(user).toBeInstanceOf(User)
+    expect(user.followingCount).toEqual(0)
+
+    expect(() => {
+      user.setFollowingCount(-5)
+    }).toThrow('Following count cant be less than 0')
+  })
+
   it('should change liked answers count', () => {
     const user = anUser.withLikedAnswersCount(0).build()
 
@@ -122,5 +156,36 @@ describe('User entity tests', () => {
 
     user.setLikedAnswersCount(5)
     expect(user.likedAnswersCount).toEqual(5)
+  })
+
+  it('should not create user with negative liked answers count', () => {
+    expect(() => {
+      anUser.withLikedAnswersCount(-5).build()
+    }).toThrow('Liked answers count cant be less than 0')
+  })
+
+  it('should not change liked answers count if value is negative', () => {
+    const user = anUser.withLikedAnswersCount(0).build()
+
+    expect(user).toBeInstanceOf(User)
+    expect(user.likedAnswersCount).toEqual(0)
+
+    expect(() => {
+      user.setLikedAnswersCount(-5)
+    }).toThrow('Liked answers count cant be less than 0')
+  })
+
+  it('should change updatedAt', () => {
+    const user = anUser.build()
+    expect(user).toBeInstanceOf(User)
+    user.setUpdatedAt(new Date('2022-01-01'))
+    expect(user.updatedAt).toEqual(new Date('2022-01-01'))
+  })
+
+  it('should change deletedAt', () => {
+    const user = anUser.build()
+    expect(user).toBeInstanceOf(User)
+    user.setDeletedAt(new Date('2022-01-01'))
+    expect(user.deletedAt).toEqual(new Date('2022-01-01'))
   })
 })

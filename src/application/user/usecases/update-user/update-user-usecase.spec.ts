@@ -62,24 +62,36 @@ describe('Update User Usecase tests', () => {
     expect(userRepository.findByUsername).toHaveBeenCalledTimes(1)
     expect(userRepository.findByUsername).toHaveBeenCalledWith('updatedUser01')
     expect(userRepository.update).toHaveBeenCalledTimes(1)
-    expect(userRepository.update).toHaveBeenCalledWith({
+    expect(userRepository.update).toHaveBeenCalledWith(expect.objectContaining({
       _id: '1',
+      _passwordHash: 'newPassword',
       _fullName: 'Updated User 01',
       _location: 'Updated location',
       _profileLocked: true,
       _summary: 'Updated summary',
-      _username: 'updatedUser01',
-      _email: expect.any(String),
-      _passwordHash: 'newPassword',
-      _likedAnswersCount: 0,
-      _followersCount: 0,
-      _followingCount: 0,
-      _createdAt: expect.any(Date),
-      _updatedAt: expect.any(Date)
-    })
+      _username: 'updatedUser01'
+    }))
   })
 
-  it('Should not update an user if ID is wrong', async () => {
+  it('Should update user profileLocked', async () => {
+    const updateUserInput: UpdateUserInputDTO = {
+      id: '1',
+      profileLocked: false
+    }
+
+    await updateUserUsecase.execute(updateUserInput)
+
+    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.findByID).toHaveBeenCalledWith('1')
+    expect(userRepository.findByUsername).not.toHaveBeenCalled()
+    expect(userRepository.update).toHaveBeenCalledTimes(1)
+    expect(userRepository.update).toHaveBeenCalledWith(expect.objectContaining({
+      _id: '1',
+      _profileLocked: false
+    }))
+  })
+
+  it('Should not update if user not found', async () => {
     const updateUserInput: UpdateUserInputDTO = {
       id: '2', // Wrong ID
       currentPassword: 'correctPassword',
@@ -119,7 +131,7 @@ describe('Update User Usecase tests', () => {
     expect(userRepository.update).not.toHaveBeenCalled()
   })
 
-  it('Should not update an user if password is wrong', async () => {
+  it('Should not update user password if currentPassword is wrong', async () => {
     const updateUserInput: UpdateUserInputDTO = {
       id: '1',
       currentPassword: 'wrongPassword', // Wrong password

@@ -62,6 +62,18 @@ describe('Create Question Usecase tests', async () => {
     })
   })
 
+  it('Should not create a new question because SOURCE and TARGET are the same', async () => {
+    const createQuestionInput: CreateQuestionInputDTO = {
+      content: 'How are u?',
+      fromId: 'sameUser',
+      toId: 'sameUser'
+    }
+
+    await expect(createQuestionUsecase.execute(createQuestionInput)).rejects.toThrow('Source and target users should be different')
+    expect(userRepository.findByID).not.toBeCalled()
+    expect(questionRepository.create).not.toBeCalled()
+  })
+
   it('Should not create a new question because SOURCE USER doesnt exist', async () => {
     const createQuestionInput: CreateQuestionInputDTO = {
       content: 'How are u?',

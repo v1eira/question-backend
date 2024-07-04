@@ -7,7 +7,8 @@
     "start:dev": "nodemon src/app.ts",
     "start:prod": "node dist/src/app.js",
     "build": "tsc --build",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
