@@ -3,8 +3,10 @@ import { Question } from '../../../../domain/question/entity/question'
 import type QuestionRepositoryInterface from '../../../../domain/question/repository/question-repository.interface'
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { type CreateQuestionInputDTO } from './create-question-dto'
+import type CreateQuestionUseCaseInterface from './create-question-usecase.interface'
+import { InvalidRequestError, NotFoundError } from '../../../../domain/error/errors'
 
-export default class CreateQuestionUsecase {
+export default class CreateQuestionUsecase implements CreateQuestionUseCaseInterface {
   private readonly questionRepository: QuestionRepositoryInterface
   private readonly userRepository: UserRepositoryInterface
 
@@ -15,17 +17,17 @@ export default class CreateQuestionUsecase {
 
   async execute (input: CreateQuestionInputDTO): Promise<void> {
     if (input.fromId === input.toId) {
-      throw new Error('Source and target users should be different')
+      throw new InvalidRequestError('Source and target users should be different')
     }
 
     const fromUser = await this.userRepository.findByID(input.fromId)
     if (fromUser === null) {
-      throw new Error('Source user not found')
+      throw new NotFoundError('Source user not found')
     }
 
     const toUser = await this.userRepository.findByID(input.toId)
     if (toUser === null) {
-      throw new Error('Target user not found')
+      throw new NotFoundError('Target user not found')
     }
 
     const question = new Question({
