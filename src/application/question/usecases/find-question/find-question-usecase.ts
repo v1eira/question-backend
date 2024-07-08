@@ -2,8 +2,9 @@ import { NotFoundError } from '../../../../domain/error/errors'
 import type QuestionRepositoryInterface from '../../../../domain/question/repository/question-repository.interface'
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { type FindQuestionInputDTO, type FindQuestionOutputDTO } from './find-question-dto'
+import type FindQuestionUseCaseInterface from './find-question-usecase.interface'
 
-export default class FindQuestionUsecase {
+export default class FindQuestionUsecase implements FindQuestionUseCaseInterface {
   private readonly questionRepository: QuestionRepositoryInterface
   private readonly userRepository: UserRepositoryInterface
 
