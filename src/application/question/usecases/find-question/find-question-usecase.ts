@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../../../domain/error/errors'
 import type QuestionRepositoryInterface from '../../../../domain/question/repository/question-repository.interface'
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { type FindQuestionInputDTO, type FindQuestionOutputDTO } from './find-question-dto'
@@ -15,17 +16,17 @@ export default class FindQuestionUsecase {
     const question = await this.questionRepository.findByID(input.id)
 
     if (question === null) {
-      throw new Error('Question not found')
+      throw new NotFoundError('Question not found')
     }
 
     const asker = await this.userRepository.findByID(question.askerId)
     if (asker === null) {
-      throw new Error('Asker not found')
+      throw new NotFoundError('Asker not found')
     }
 
     const recipient = await this.userRepository.findByID(question.recipientId)
     if (recipient === null) {
-      throw new Error('Recipient not found')
+      throw new NotFoundError('Recipient not found')
     }
 
     return {
