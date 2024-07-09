@@ -1,11 +1,11 @@
-import type FindQuestionUseCaseInterface from '../../../../application/question/usecases/find-question/find-question-usecase.interface'
+import type FindAnsweredQuestionUseCaseInterface from '../../../../application/question/usecases/find-answered-question/find-answered-question.interface'
 import makeHttpErrorResponse from '../../../helpers/http-error-response'
 import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
 
 export default class FindQuestionController {
-  private readonly findQuestionUseCase: FindQuestionUseCaseInterface
+  private readonly findQuestionUseCase: FindAnsweredQuestionUseCaseInterface
 
-  constructor (findQuestionUseCase: FindQuestionUseCaseInterface) {
+  constructor (findQuestionUseCase: FindAnsweredQuestionUseCaseInterface) {
     this.findQuestionUseCase = findQuestionUseCase
   }
 

@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vitest } from 'vitest'
 import FindQuestionController from './find-question-controller'
-import type FindQuestionUsecaseInterface from '../../../../application/question/usecases/find-question/find-question-usecase.interface'
 import { NotFoundError } from '../../../../domain/error/errors'
+import type FindAnsweredQuestionUseCaseInterface from '../../../../application/question/usecases/find-answered-question/find-answered-question.interface'
 
-const MockUseCase = (): FindQuestionUsecaseInterface => {
+const MockUseCase = (): FindAnsweredQuestionUseCaseInterface => {
   return {
     execute: vitest.fn()
   }
@@ -23,24 +23,33 @@ describe('FindQuestionController', () => {
     }
   }
 
-  it('Should find a question', async () => {
-    const output = {
+  const output = {
+    question: {
       id: 'any_id',
-      content: 'any_content',
+      content: expect.any(String),
+      createdAt: expect.any(Date),
       asker: {
-        id: 'any_id',
-        fullName: 'any_full_name',
-        username: 'any_username',
-        email: 'any_email'
-      },
-      recipient: {
-        id: 'any_id',
-        fullName: 'any_full_name',
-        username: 'any_username',
-        email: 'any_email'
-      },
-      createdAt: new Date('2022-01-01')
+        id: expect.any(String),
+        fullName: expect.any(String),
+        username: expect.any(String),
+        email: expect.any(String)
+      }
+    },
+    answer: {
+      id: expect.any(String),
+      content: expect.any(String),
+      likes: expect.any(Number),
+      createdAt: expect.any(Date),
+      responder: {
+        id: expect.any(String),
+        fullName: expect.any(String),
+        username: expect.any(String),
+        email: expect.any(String)
+      }
     }
+  }
+
+  it('Should find a question', async () => {
     vitest
       .spyOn(usecase, 'execute')
       .mockImplementationOnce(async () => { return await Promise.resolve(output) })
@@ -82,11 +91,11 @@ describe('FindQuestionController', () => {
     expect(response.body.error).toBe('Asker not found')
   })
 
-  it('Should return body with statusCode 404 if Recipient not found', async () => {
+  it('Should return body with statusCode 404 if Responder not found', async () => {
     vitest
       .spyOn(usecase, 'execute')
       .mockImplementationOnce(() => {
-        throw new NotFoundError('Recipient not found')
+        throw new NotFoundError('Responder not found')
       })
 
     const response = await findQuestionController.handle(httpRequest)
@@ -94,7 +103,22 @@ describe('FindQuestionController', () => {
     expect(usecase.execute).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(404)
     expect(response.body).toHaveProperty('error')
-    expect(response.body.error).toBe('Recipient not found')
+    expect(response.body.error).toBe('Responder not found')
+  })
+
+  it('Should return body with statusCode 404 if Answer not found', async () => {
+    vitest
+      .spyOn(usecase, 'execute')
+      .mockImplementationOnce(() => {
+        throw new NotFoundError('Answer not found')
+      })
+
+    const response = await findQuestionController.handle(httpRequest)
+    expect(usecase.execute).toHaveBeenCalledWith({ id: httpRequest.params.id })
+    expect(usecase.execute).toHaveBeenCalledTimes(1)
+    expect(response.statusCode).toBe(404)
+    expect(response.body).toHaveProperty('error')
+    expect(response.body.error).toBe('Answer not found')
   })
 
   it('Should return body with statusCode 500 if unexpected error occurs', async () => {
