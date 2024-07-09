@@ -19,7 +19,6 @@ const UserMockRepository = (): UserRepositoryInterface => {
 
 const QuestionQueryHandler = (): QuestionQueryInterface => {
   return {
-    findAnsweredQuestionById: vitest.fn(),
     listAnsweredQuestions: vitest.fn(),
     listUserUnansweredQuestions: vitest.fn()
   }
