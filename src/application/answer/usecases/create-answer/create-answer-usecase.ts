@@ -1,11 +1,13 @@
 import { Answer } from '../../../../domain/answer/entity/answer'
 import type AnswerRepositoryInterface from '../../../../domain/answer/repository/answer-repository.interface'
+import { ConflictError, NotFoundError } from '../../../../domain/error/errors'
 import type QuestionRepositoryInterface from '../../../../domain/question/repository/question-repository.interface'
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { type CreateAnswerInputDTO } from './create-answer-dto'
 import { v4 as uuid } from 'uuid'
+import type CreateAnswerUsecaseInterface from './create-answer-usecase.interface'
 
-export default class CreateAnswerUseCase {
+export default class CreateAnswerUseCase implements CreateAnswerUsecaseInterface {
   constructor (
     private readonly answerRepository: AnswerRepositoryInterface,
     private readonly userRepository: UserRepositoryInterface,
@@ -15,16 +17,16 @@ export default class CreateAnswerUseCase {
   async execute (input: CreateAnswerInputDTO): Promise<void> {
     const question = await this.questionRepository.findByID(input.questionId)
     if (question == null) {
-      throw new Error('Question not found')
+      throw new NotFoundError('Question not found')
     }
 
     const responder = await this.userRepository.findByID(input.responderId)
     if (responder == null) {
-      throw new Error('Responder not found')
+      throw new NotFoundError('Responder not found')
     }
 
     if (question.recipientId !== responder.id) {
-      throw new Error('Responder is not the recipient of the question')
+      throw new ConflictError('Responder is not the recipient of the question')
     }
 
     const answer = new Answer({
