@@ -3,6 +3,7 @@ import type UserRepositoryInterface from '../../../../domain/user/repository/use
 import ListUnansweredQuestionsQueryHandler from './list-unanswered-questions'
 import { type QuestionQueryInterface } from '../../../../domain/question/query/question-query.interface'
 import UserBuilder from '../../../../domain/user/entity/user-data-builder'
+import QuestionBuilder from '../../../../domain/question/entity/question-data-builder'
 
 const UserMockRepository = (): UserRepositoryInterface => {
   return {
@@ -16,7 +17,7 @@ const UserMockRepository = (): UserRepositoryInterface => {
   }
 }
 
-const QuestionQueryImpl = (): QuestionQueryInterface => {
+const QuestionQueryHandler = (): QuestionQueryInterface => {
   return {
     findAnsweredQuestionById: vitest.fn(),
     listAnsweredQuestions: vitest.fn(),
@@ -26,10 +27,11 @@ const QuestionQueryImpl = (): QuestionQueryInterface => {
 
 describe('List Unanswered Questions Query Handler tests', () => {
   const userRepository = UserMockRepository()
-  const questionQuery = QuestionQueryImpl()
-  const listQuestionsToAnswerQueryHandler = new ListUnansweredQuestionsQueryHandler(userRepository, questionQuery)
+  const queryHandler = QuestionQueryHandler()
+  const listQuestionsToAnswerQueryHandler = new ListUnansweredQuestionsQueryHandler(userRepository, queryHandler)
 
   const anUser = new UserBuilder()
+  const aQuestion = new QuestionBuilder()
 
   afterEach(() => {
     vitest.clearAllMocks()
@@ -39,29 +41,21 @@ describe('List Unanswered Questions Query Handler tests', () => {
     const spyFindUser = vitest.spyOn(userRepository, 'findByID')
     spyFindUser.mockReturnValueOnce(Promise.resolve(anUser.withId('recipientId').build()))
 
-    const spyQuery = vitest.spyOn(questionQuery, 'listUserUnansweredQuestions')
+    const spyQuery = vitest.spyOn(queryHandler, 'listUserUnansweredQuestions')
     spyQuery.mockReturnValueOnce(Promise.resolve([
       {
-        id: 'questionId',
-        content: 'this is a question',
-        recipientId: 'recipientId',
-        createdAt: expect.any(Date),
-        asker: {
-          id: 'askerId',
-          fullName: 'askerFullName',
-          username: 'askerUsername',
-          email: 'askerEmail'
-        }
+        question: aQuestion.build(),
+        asker: anUser.build()
       }
     ]))
 
-    const questionsToAnswer = await listQuestionsToAnswerQueryHandler.execute({ recipientId: 'recipientID' })
+    const unansweredQuestions = await listQuestionsToAnswerQueryHandler.execute({ recipientId: 'recipientID' })
     expect(userRepository.findByID).toHaveBeenCalledTimes(1)
     expect(userRepository.findByID).toHaveBeenCalledWith('recipientID')
     expect(userRepository.findByID).toHaveReturnedWith(expect.objectContaining({ id: 'recipientId' }))
-    expect(questionQuery.listUserUnansweredQuestions).toHaveBeenCalledTimes(1)
-    expect(questionQuery.listUserUnansweredQuestions).toHaveBeenCalledWith('recipientId')
-    expect(questionsToAnswer).toStrictEqual({
+    expect(queryHandler.listUserUnansweredQuestions).toHaveBeenCalledTimes(1)
+    expect(queryHandler.listUserUnansweredQuestions).toHaveBeenCalledWith('recipientId')
+    expect(unansweredQuestions).toStrictEqual({
       questions: [
         {
           id: expect.any(String),
@@ -86,22 +80,22 @@ describe('List Unanswered Questions Query Handler tests', () => {
     expect(userRepository.findByID).toHaveBeenCalledTimes(1)
     expect(userRepository.findByID).toHaveBeenCalledWith('recipientID')
     expect(userRepository.findByID).toHaveReturnedWith(null)
-    expect(questionQuery.listUserUnansweredQuestions).not.toHaveBeenCalled()
+    expect(queryHandler.listUserUnansweredQuestions).not.toHaveBeenCalled()
   })
 
   it('Should return empty array if no questions found', async () => {
     const spyFindUser = vitest.spyOn(userRepository, 'findByID')
     spyFindUser.mockReturnValueOnce(Promise.resolve(anUser.withId('recipientId').build()))
 
-    const spyQuery = vitest.spyOn(questionQuery, 'listUserUnansweredQuestions')
+    const spyQuery = vitest.spyOn(queryHandler, 'listUserUnansweredQuestions')
     spyQuery.mockReturnValueOnce(Promise.resolve([]))
 
     const questionsToAnswer = await listQuestionsToAnswerQueryHandler.execute({ recipientId: 'recipientID' })
     expect(userRepository.findByID).toHaveBeenCalledTimes(1)
     expect(userRepository.findByID).toHaveBeenCalledWith('recipientID')
     expect(userRepository.findByID).toHaveReturnedWith(expect.objectContaining({ id: 'recipientId' }))
-    expect(questionQuery.listUserUnansweredQuestions).toHaveBeenCalledTimes(1)
-    expect(questionQuery.listUserUnansweredQuestions).toHaveBeenCalledWith('recipientId')
+    expect(queryHandler.listUserUnansweredQuestions).toHaveBeenCalledTimes(1)
+    expect(queryHandler.listUserUnansweredQuestions).toHaveBeenCalledWith('recipientId')
     expect(questionsToAnswer).toStrictEqual({
       questions: []
     })

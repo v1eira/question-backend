@@ -1,9 +1,17 @@
-import { type QuestionWithAsker } from '../../../../domain/question/query/question-query.interface'
-
 export interface ListUnansweredQuestionsInputDto {
   recipientId: string
 }
 
 export interface ListUnansweredQuestionsOutputDto {
-  questions: QuestionWithAsker[]
+  questions: Array<{
+    id: string
+    content: string
+    createdAt: Date
+    asker: {
+      id: string
+      fullName: string
+      username: string
+      email: string
+    }
+  }>
 }

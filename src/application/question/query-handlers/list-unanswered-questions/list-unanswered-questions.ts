@@ -20,9 +20,9 @@ export default class ListUnansweredQuestionsQueryHandler implements ListUnanswer
 
     return {
       questions: unansweredQuestions.map((q) => ({
-        id: q.id,
-        content: q.content,
-        createdAt: q.createdAt,
+        id: q.question.id,
+        content: q.question.content,
+        createdAt: q.question.createdAt,
         asker: {
           id: q.asker.id,
           fullName: q.asker.fullName,

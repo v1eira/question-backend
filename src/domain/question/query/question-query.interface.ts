@@ -1,39 +1,17 @@
+import { type Answer } from '../../answer/entity/answer'
+import { type User } from '../../user/entity/user'
+import { type Question } from '../entity/question'
+
 export interface QuestionWithAsker {
-  id: string
-  content: string
-  createdAt: Date
-  asker: {
-    id: string
-    fullName: string
-    username: string
-    email: string
-  }
+  question: Question
+  asker: User
 }
 
 export interface AnsweredQuestion {
-  question: {
-    id: string
-    content: string
-    createdAt: Date
-    asker: {
-      id: string
-      fullName: string
-      username: string
-      email: string
-    }
-  }
-  answer: {
-    id: string
-    content: string
-    likes: number
-    createdAt: Date
-    responder: {
-      id: string
-      fullName: string
-      username: string
-      email: string
-    }
-  }
+  question: Question
+  asker: User
+  answer: Answer
+  responder: User
 }
 
 export interface SearchParams {
