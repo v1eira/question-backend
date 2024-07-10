@@ -1,0 +1,20 @@
+model Relationship {
+  id        String   @id
+  name      String
+  from      User     @relation("from_user", fields: [fromId], references: [id])
+  fromId    String
+  to        User     @relation("to_user", fields: [toId], references: [id])
+  toId      String
+  status    String
+  createdAt DateTime @default(now())
+  deletedAt DateTime
+}
+
+// name
+// - follow
+// - block
+
+// status
+// - pending
+// - accepted
+// - rejected

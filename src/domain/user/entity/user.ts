@@ -10,7 +10,7 @@ export class User {
   private _followersCount: number
   private _followingCount: number
   private _likedAnswersCount: number
-  private readonly _createdAt: Date
+  private _createdAt: Date
   private _updatedAt: Date
   private _deletedAt: Date
 
@@ -109,6 +109,10 @@ export class User {
 
   get createdAt (): Date {
     return this._createdAt
+  }
+
+  setCreatedAt (createdAt: Date): void {
+    this._createdAt = createdAt
   }
 
   get updatedAt (): Date {

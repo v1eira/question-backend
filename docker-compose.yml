@@ -4,8 +4,36 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    container_name: question_node
+    depends_on:
+      - db
+    volumes:
+      - ./app:/usr/src/app
     ports:
       - 3000:3000
+    expose:
+      - "3000"
+    networks:
+      - app_network
+  db:
+    image: postgres:alpine
+    container_name: question_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: question
+    ports:
+      - 5432:5432
+    expose:
+      - "5432"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
+    driver: bridge

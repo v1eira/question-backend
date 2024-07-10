@@ -1,0 +1,11 @@
+model Question {
+  id          String   @id
+  content     String
+  asker       User     @relation("question_asker", fields: [askerId], references: [id])
+  askerId     String
+  recipient   User     @relation("question_recipient", fields: [recipientId], references: [id])
+  recipientId String
+  createdAt   DateTime @default(now())
+  deletedAt   DateTime
+  Answer      Answer[]
+}
