@@ -13,6 +13,7 @@ export class Answer {
   private readonly _questionId: string
   private _likes: number = 0
   private readonly _createdAt: Date
+  private _deletedAt: Date
 
   constructor (props: AnswerProps) {
     this._id = props.id
@@ -55,6 +56,14 @@ export class Answer {
 
   get createdAt (): Date {
     return this._createdAt
+  }
+
+  get deletedAt (): Date {
+    return this._deletedAt
+  }
+
+  setDeletedAt (deletedAt: Date): void {
+    this._deletedAt = deletedAt
   }
 
   private validate (): void {

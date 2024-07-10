@@ -1,8 +1,7 @@
 import { type Answer } from '../entity/answer'
 
 export interface AnswerFilters {
-  from?: string[]
-  to?: string[]
+  responderId?: string
   content?: string
 }
 
