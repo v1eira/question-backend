@@ -3,7 +3,8 @@ export class Question {
   private readonly _content: string
   private readonly _askerId: string
   private readonly _recipientId: string
-  private readonly _createdAt: Date
+  private _createdAt: Date
+  private _deletedAt: Date
 
   get id (): string {
     return this._id
@@ -23,6 +24,18 @@ export class Question {
 
   get createdAt (): Date {
     return this._createdAt
+  }
+
+  setCreatedAt (createdAt: Date): void {
+    this._createdAt = createdAt
+  }
+
+  get deletedAt (): Date {
+    return this._deletedAt
+  }
+
+  setDeletedAt (deletedAt: Date): void {
+    this._deletedAt = deletedAt
   }
 
   private validate (): void {

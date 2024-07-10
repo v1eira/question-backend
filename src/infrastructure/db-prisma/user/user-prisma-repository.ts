@@ -58,7 +58,7 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
         id
       }
     })
-    return user === null ? null : this.mapPrismaEntityToUserEntity(user)
+    return user === null ? null : this.toUserEntity(user)
   }
 
   async findByEmail (email: string): Promise<User | null> {
@@ -67,7 +67,7 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
         email
       }
     })
-    return user === null ? null : this.mapPrismaEntityToUserEntity(user)
+    return user === null ? null : this.toUserEntity(user)
   }
 
   async findByUsername (username: string): Promise<User | null> {
@@ -76,13 +76,13 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
         username
       }
     })
-    return user === null ? null : this.mapPrismaEntityToUserEntity(user)
+    return user === null ? null : this.toUserEntity(user)
   }
 
   async findAll (): Promise<User[]> {
     // TBD
     const users = await this.prisma.user.findMany()
-    return users.map((user) => this.mapPrismaEntityToUserEntity(user))
+    return users.map((user) => this.toUserEntity(user))
   }
 
   async delete (id: string): Promise<void> {
@@ -93,7 +93,7 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
     })
   }
 
-  private mapPrismaEntityToUserEntity (user: PrismaUser): User {
+  private toUserEntity (user: PrismaUser): User {
     const u = new User({
       id: user.id,
       fullName: user.fullName,
