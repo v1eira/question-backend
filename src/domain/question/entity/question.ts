@@ -1,3 +1,11 @@
+interface QuestionProps {
+  id: string
+  content: string
+  askerId: string
+  recipientId: string
+  createdAt?: Date
+}
+
 export class Question {
   private readonly _id: string
   private readonly _content: string
@@ -5,6 +13,15 @@ export class Question {
   private readonly _recipientId: string
   private _createdAt: Date
   private _deletedAt: Date
+
+  constructor (props: QuestionProps) {
+    this._id = props.id
+    this._content = props.content
+    this._askerId = props.askerId
+    this._recipientId = props.recipientId
+    this._createdAt = props.createdAt ?? new Date()
+    this.validate()
+  }
 
   get id (): string {
     return this._id
@@ -58,14 +75,5 @@ export class Question {
     if (this.askerId === this.recipientId) {
       throw new Error('Question recipient should be different than asker')
     }
-  }
-
-  constructor ({ id, content, askerId, recipientId }) {
-    this._id = id
-    this._content = content
-    this._askerId = askerId
-    this._recipientId = recipientId
-    this._createdAt = new Date()
-    this.validate()
   }
 }

@@ -43,7 +43,6 @@ describe('Find User Usecase tests', () => {
       profileLocked: expect.any(Boolean),
       followersCount: expect.any(Number),
       followingCount: expect.any(Number),
-      likedAnswersCount: expect.any(Number),
       createdAt: expect.any(Date)
     })
   })

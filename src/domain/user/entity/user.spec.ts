@@ -148,33 +148,6 @@ describe('User entity tests', () => {
     }).toThrow('Following count cant be less than 0')
   })
 
-  it('should change liked answers count', () => {
-    const user = anUser.withLikedAnswersCount(0).build()
-
-    expect(user).toBeInstanceOf(User)
-    expect(user.likedAnswersCount).toEqual(0)
-
-    user.setLikedAnswersCount(5)
-    expect(user.likedAnswersCount).toEqual(5)
-  })
-
-  it('should not create user with negative liked answers count', () => {
-    expect(() => {
-      anUser.withLikedAnswersCount(-5).build()
-    }).toThrow('Liked answers count cant be less than 0')
-  })
-
-  it('should not change liked answers count if value is negative', () => {
-    const user = anUser.withLikedAnswersCount(0).build()
-
-    expect(user).toBeInstanceOf(User)
-    expect(user.likedAnswersCount).toEqual(0)
-
-    expect(() => {
-      user.setLikedAnswersCount(-5)
-    }).toThrow('Liked answers count cant be less than 0')
-  })
-
   it('should change updatedAt', () => {
     const user = anUser.build()
     expect(user).toBeInstanceOf(User)

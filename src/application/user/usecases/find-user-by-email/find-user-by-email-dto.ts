@@ -12,6 +12,5 @@ export interface FindUserByEmailOutputDTO {
   profileLocked: boolean
   followersCount: number
   followingCount: number
-  likedAnswersCount: number
   createdAt: Date
 }

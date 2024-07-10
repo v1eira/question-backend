@@ -1,3 +1,11 @@
+interface AnswerProps {
+  id: string
+  content: string
+  responderId: string
+  questionId: string
+  createdAt?: Date
+}
+
 export class Answer {
   private readonly _id: string
   private readonly _content: string
@@ -5,6 +13,15 @@ export class Answer {
   private readonly _questionId: string
   private _likes: number = 0
   private readonly _createdAt: Date
+
+  constructor (props: AnswerProps) {
+    this._id = props.id
+    this._content = props.content
+    this._responderId = props.responderId
+    this._questionId = props.questionId
+    this._createdAt = props.createdAt ?? new Date()
+    this.validate()
+  }
 
   get id (): string {
     return this._id
@@ -56,14 +73,5 @@ export class Answer {
     if (this.responderId.length === 0) {
       throw new Error('ResponderId is required')
     }
-  }
-
-  constructor ({ id, content, responderId, questionId }) {
-    this._id = id
-    this._content = content
-    this._responderId = responderId
-    this._questionId = questionId
-    this._createdAt = new Date()
-    this.validate()
   }
 }

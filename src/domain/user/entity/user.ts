@@ -1,3 +1,17 @@
+interface UserProps {
+  id: string
+  fullName: string
+  username: string
+  email: string
+  passwordHash: string
+  summary?: string
+  location?: string
+  profileLocked?: boolean
+  followersCount?: number
+  followingCount?: number
+  createdAt?: Date
+}
+
 export class User {
   private readonly _id: string
   private _fullName: string
@@ -9,10 +23,24 @@ export class User {
   private _profileLocked: boolean
   private _followersCount: number
   private _followingCount: number
-  private _likedAnswersCount: number
   private _createdAt: Date
   private _updatedAt: Date
   private _deletedAt: Date
+
+  constructor (props: UserProps) {
+    this._id = props.id
+    this._fullName = props.fullName
+    this._username = props.username
+    this._email = props.email
+    this._passwordHash = props.passwordHash
+    this._summary = props.summary ?? ''
+    this._location = props.location ?? ''
+    this._profileLocked = props.profileLocked ?? false
+    this._followersCount = props.followersCount ?? 0
+    this._followingCount = props.followingCount ?? 0
+    this._createdAt = props.createdAt ?? new Date()
+    this.validate()
+  }
 
   get id (): string {
     return this._id
@@ -96,17 +124,6 @@ export class User {
     this._followingCount = followingCount
   }
 
-  get likedAnswersCount (): number {
-    return this._likedAnswersCount
-  }
-
-  setLikedAnswersCount (likedAnswersCount: number): void {
-    if (likedAnswersCount < 0) {
-      throw new Error('Liked answers count cant be less than 0')
-    }
-    this._likedAnswersCount = likedAnswersCount
-  }
-
   get createdAt (): Date {
     return this._createdAt
   }
@@ -159,37 +176,5 @@ export class User {
     if (this.followingCount < 0) {
       throw new Error('Following count cant be less than 0')
     }
-
-    if (this.likedAnswersCount < 0) {
-      throw new Error('Liked answers count cant be less than 0')
-    }
-  }
-
-  constructor ({
-    id,
-    fullName,
-    username,
-    email,
-    passwordHash,
-    summary = '',
-    location = '',
-    profileLocked = false,
-    followersCount = 0,
-    followingCount = 0,
-    likedAnswersCount = 0
-  }) {
-    this._id = id
-    this._fullName = fullName
-    this._username = username
-    this._email = email
-    this._passwordHash = passwordHash
-    this._summary = summary
-    this._location = location
-    this._profileLocked = profileLocked
-    this._followersCount = followersCount
-    this._followingCount = followingCount
-    this._likedAnswersCount = likedAnswersCount
-    this._createdAt = new Date()
-    this.validate()
   }
 }

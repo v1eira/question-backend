@@ -37,6 +37,7 @@ export default class QuestionPrismaRepository implements QuestionRepositoryInter
   }
 
   async findRecipientQuestions (recipientId: string): Promise<Question[]> {
+    // TBD
     const questions = await this.prisma.question.findMany({
       where: {
         recipientId

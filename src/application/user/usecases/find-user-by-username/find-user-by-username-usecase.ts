@@ -23,7 +23,6 @@ export default class FindUserByUsernameUsecase {
       profileLocked: user.profileLocked,
       followersCount: user.followersCount,
       followingCount: user.followingCount,
-      likedAnswersCount: user.likedAnswersCount,
       createdAt: user.createdAt
     }
   }

@@ -35,7 +35,6 @@ describe('FindUserController', () => {
       profileLocked: false,
       followersCount: 0,
       followingCount: 0,
-      likedAnswersCount: 0,
       createdAt: new Date()
     }
 

@@ -11,7 +11,6 @@ export default class UserBuilder {
   private profileLocked: boolean = false
   private followersCount: number = 0
   private followingCount: number = 0
-  private likedAnswersCount: number = 0
 
   public withId (id: string): this {
     this.id = id
@@ -63,11 +62,6 @@ export default class UserBuilder {
     return this
   }
 
-  public withLikedAnswersCount (likedAnswersCount: number): this {
-    this.likedAnswersCount = likedAnswersCount
-    return this
-  }
-
   public build (): User {
     return new User({
       id: this.id,
@@ -79,8 +73,7 @@ export default class UserBuilder {
       location: this.location,
       profileLocked: this.profileLocked,
       followersCount: this.followersCount,
-      followingCount: this.followingCount,
-      likedAnswersCount: this.likedAnswersCount
+      followingCount: this.followingCount
     })
   }
 }
