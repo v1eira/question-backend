@@ -1,8 +1,9 @@
 import type UpdateUserUsecaseInterface from '../../../../application/user/usecases/update-user/update-user-usecase.interface'
 import makeHttpErrorResponse from '../../../helpers/http-error-response'
+import { type Controller } from '../../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
 
-export default class UpdateUserController {
+export default class UpdateUserController implements Controller {
   private readonly updateUserUseCase: UpdateUserUsecaseInterface
 
   constructor (updateUserUseCase: UpdateUserUsecaseInterface) {

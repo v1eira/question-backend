@@ -1,8 +1,9 @@
 import type FindUserUsecaseInterface from '../../../../application/user/usecases/find-user/find-user-usecase.interface'
 import makeHttpErrorResponse from '../../../helpers/http-error-response'
+import { type Controller } from '../../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
 
-export default class FindUserController {
+export default class FindUserController implements Controller {
   private readonly findUserUseCase: FindUserUsecaseInterface
   constructor (findUserUseCase: FindUserUsecaseInterface) {
     this.findUserUseCase = findUserUseCase
