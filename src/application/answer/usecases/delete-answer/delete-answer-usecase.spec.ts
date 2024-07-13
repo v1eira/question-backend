@@ -5,7 +5,7 @@ import DeleteAnswerUseCase from './delete-answer-usecase'
 const AnswerMockRepository = (): AnswerRepositoryInterface => {
   return {
     create: vitest.fn(),
-    findByID: vitest.fn().mockImplementation(
+    getByID: vitest.fn().mockImplementation(
       (id: string) => id === 'answerId'
         ? {
             id: 'answerId',
@@ -17,8 +17,8 @@ const AnswerMockRepository = (): AnswerRepositoryInterface => {
           }
         : null
     ),
-    findByQuestionID: vitest.fn(),
-    findAll: vitest.fn(),
+    getByQuestionID: vitest.fn(),
+    getAll: vitest.fn(),
     delete: vitest.fn()
   }
 }
@@ -40,8 +40,8 @@ describe('Delete Answer Usecase tests', () => {
 
   it('Should throw an error if answer not found', async () => {
     await expect(deleteAnswerUseCase.execute({ id: 'non-existent-answer' })).rejects.toThrow('Answer not found')
-    expect(answerRepository.findByID).toHaveBeenCalledWith('non-existent-answer')
-    expect(answerRepository.findByID).toHaveReturnedWith(null)
+    expect(answerRepository.getByID).toHaveBeenCalledWith('non-existent-answer')
+    expect(answerRepository.getByID).toHaveReturnedWith(null)
     expect(answerRepository.delete).not.toHaveBeenCalled()
   })
 })

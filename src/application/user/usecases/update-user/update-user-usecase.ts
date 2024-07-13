@@ -14,14 +14,14 @@ export default class UpdateUserUsecase implements UpdateUserUsecaseInterface {
   }
 
   async execute (input: UpdateUserInputDTO): Promise<void> {
-    const user = await this.userRepository.findByID(input.id)
+    const user = await this.userRepository.getByID(input.id)
     if (user == null) {
       throw new NotFoundError('User not found')
     }
 
     if (input.username != null) {
-      const findUser = await this.userRepository.findByUsername(input.username)
-      if (findUser != null && findUser.id !== user.id) {
+      const getUser = await this.userRepository.getByUsername(input.username)
+      if (getUser != null && getUser.id !== user.id) {
         throw new ConflictError('Username already in use')
       }
     }

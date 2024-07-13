@@ -9,10 +9,10 @@ const MockUserRepository = (): UserRepositoryInterface => {
   return {
     create: vitest.fn(),
     update: vitest.fn(),
-    findByEmail: vitest.fn(),
-    findByUsername: vitest.fn(),
-    findAll: vitest.fn(),
-    findByID: vitest.fn().mockImplementation(
+    getByEmail: vitest.fn(),
+    getByUsername: vitest.fn(),
+    getAll: vitest.fn(),
+    getByID: vitest.fn().mockImplementation(
       (id: string) => ['fromID', 'toID'].includes(id)
         ? new UserBuilder().withId(id).build()
         : null
@@ -24,9 +24,9 @@ const MockUserRepository = (): UserRepositoryInterface => {
 const MockQuestionRepository = (): QuestionRepositoryInterface => {
   return {
     create: vitest.fn(),
-    findByID: vitest.fn(),
-    findRecipientQuestions: vitest.fn(),
-    findAll: vitest.fn(),
+    getByID: vitest.fn(),
+    getRecipientQuestions: vitest.fn(),
+    getAll: vitest.fn(),
     delete: vitest.fn()
   }
 }
@@ -49,9 +49,9 @@ describe('Create Question Usecase tests', async () => {
 
     await createQuestionUsecase.execute(createQuestionInput)
 
-    expect(userRepository.findByID).toBeCalledTimes(2)
-    expect(userRepository.findByID).toBeCalledWith('fromID')
-    expect(userRepository.findByID).toBeCalledWith('toID')
+    expect(userRepository.getByID).toBeCalledTimes(2)
+    expect(userRepository.getByID).toBeCalledWith('fromID')
+    expect(userRepository.getByID).toBeCalledWith('toID')
     expect(questionRepository.create).toBeCalledTimes(1)
     expect(questionRepository.create).toBeCalledWith({
       _id: expect.any(String),
@@ -70,7 +70,7 @@ describe('Create Question Usecase tests', async () => {
     }
 
     await expect(createQuestionUsecase.execute(createQuestionInput)).rejects.toThrow('Source and target users should be different')
-    expect(userRepository.findByID).not.toBeCalled()
+    expect(userRepository.getByID).not.toBeCalled()
     expect(questionRepository.create).not.toBeCalled()
   })
 
@@ -82,8 +82,8 @@ describe('Create Question Usecase tests', async () => {
     }
 
     await expect(createQuestionUsecase.execute(createQuestionInput)).rejects.toThrow('Source user not found')
-    expect(userRepository.findByID).toBeCalledTimes(1)
-    expect(userRepository.findByID).toBeCalledWith('userDoesntExist')
+    expect(userRepository.getByID).toBeCalledTimes(1)
+    expect(userRepository.getByID).toBeCalledWith('userDoesntExist')
     expect(questionRepository.create).not.toBeCalled()
   })
 
@@ -95,9 +95,9 @@ describe('Create Question Usecase tests', async () => {
     }
 
     await expect(createQuestionUsecase.execute(createQuestionInput)).rejects.toThrow('Target user not found')
-    expect(userRepository.findByID).toBeCalledTimes(2)
-    expect(userRepository.findByID).toBeCalledWith('fromID')
-    expect(userRepository.findByID).toBeCalledWith('userDoesntExist')
+    expect(userRepository.getByID).toBeCalledTimes(2)
+    expect(userRepository.getByID).toBeCalledWith('fromID')
+    expect(userRepository.getByID).toBeCalledWith('userDoesntExist')
     expect(questionRepository.create).not.toBeCalled()
   })
 })

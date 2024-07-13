@@ -10,18 +10,18 @@ const MockRepository = (): UserRepositoryInterface => {
   return {
     create: vitest.fn(),
     update: vitest.fn(),
-    findByID: vitest.fn(),
-    findByEmail: vitest.fn().mockImplementation(email =>
+    getByID: vitest.fn(),
+    getByEmail: vitest.fn().mockImplementation(email =>
       email === 'emailAlreadyExists@email.com'
         ? anUser.withEmail('emailAlreadyExists@email.com').build()
         : null
     ),
-    findByUsername: vitest.fn().mockImplementation(username =>
+    getByUsername: vitest.fn().mockImplementation(username =>
       username === 'usernameAlreadyExists'
         ? anUser.withUsername('usernameAlreadyExists').build()
         : null
     ),
-    findAll: vitest.fn(),
+    getAll: vitest.fn(),
     delete: vitest.fn()
   }
 }
@@ -39,10 +39,10 @@ describe('Create User Usecase tests', () => {
     }
 
     await createUserUsecase.execute(createUserInput)
-    expect(userRepository.findByEmail).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByEmail).toHaveBeenCalledWith('newuser@email.com')
-    expect(userRepository.findByUsername).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByUsername).toHaveBeenCalledWith('newuser')
+    expect(userRepository.getByEmail).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByEmail).toHaveBeenCalledWith('newuser@email.com')
+    expect(userRepository.getByUsername).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByUsername).toHaveBeenCalledWith('newuser')
     expect(userRepository.create).toHaveBeenCalledTimes(1)
     expect(userRepository.create).toHaveBeenCalledWith({
       _id: expect.any(String),

@@ -26,7 +26,7 @@ export default class AnswerPrismaRepository implements AnswerRepositoryInterface
     })
   }
 
-  async findByID (id: string): Promise<Answer | null> {
+  async getByID (id: string): Promise<Answer | null> {
     const answer = await this.prisma.answer.findUnique({
       where: {
         id
@@ -35,7 +35,7 @@ export default class AnswerPrismaRepository implements AnswerRepositoryInterface
     return answer == null ? null : this.toAnswerEntity(answer)
   }
 
-  async findByQuestionID (questionId: string): Promise<Answer | null> {
+  async getByQuestionID (questionId: string): Promise<Answer | null> {
     const answer = await this.prisma.answer.findUnique({
       where: {
         questionId
@@ -44,9 +44,9 @@ export default class AnswerPrismaRepository implements AnswerRepositoryInterface
     return answer == null ? null : this.toAnswerEntity(answer)
   }
 
-  async findAll (filters: AnswerFilters): Promise<Answer[]> {
+  async getAll (filters: AnswerFilters): Promise<Answer[]> {
     // TBD
-    const answers = await this.prisma.answer.findMany({
+    const answers = await this.prisma.answer.getMany({
       where: {
         responderId: filters.responderId,
         content: {

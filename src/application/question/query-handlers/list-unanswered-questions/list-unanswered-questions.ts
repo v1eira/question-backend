@@ -11,7 +11,7 @@ export default class ListUnansweredQuestionsQueryHandler implements ListUnanswer
   ) {}
 
   async execute (input: ListUnansweredQuestionsInputDto): Promise<ListUnansweredQuestionsOutputDto> {
-    const recipient = await this.userRepository.findByID(input.recipientId)
+    const recipient = await this.userRepository.getByID(input.recipientId)
     if (recipient === null) {
       throw new NotFoundError('Recipient not found')
     }

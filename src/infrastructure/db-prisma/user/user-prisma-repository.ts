@@ -52,7 +52,7 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
     })
   }
 
-  async findByID (id: string): Promise<User | null> {
+  async getByID (id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         id
@@ -61,7 +61,7 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
     return user === null ? null : this.toUserEntity(user)
   }
 
-  async findByEmail (email: string): Promise<User | null> {
+  async getByEmail (email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         email
@@ -70,7 +70,7 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
     return user === null ? null : this.toUserEntity(user)
   }
 
-  async findByUsername (username: string): Promise<User | null> {
+  async getByUsername (username: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         username
@@ -79,9 +79,9 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
     return user === null ? null : this.toUserEntity(user)
   }
 
-  async findAll (): Promise<User[]> {
+  async getAll (): Promise<User[]> {
     // TBD
-    const users = await this.prisma.user.findMany()
+    const users = await this.prisma.user.getMany()
     return users.map((user) => this.toUserEntity(user))
   }
 

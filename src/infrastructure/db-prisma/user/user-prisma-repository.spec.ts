@@ -115,18 +115,18 @@ describe('UserPrismaRepository tests', () => {
     })
   })
 
-  describe('Find User tests', () => {
-    it('Should find an user', async () => {
+  describe('Get User tests', () => {
+    it('Should get an user', async () => {
       const userPrismaRepository = new UserPrismaRepository(prisma)
 
       vitest.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce(anUser.withId('1').build())
-      const foundUserById = await userPrismaRepository.findByID('1')
+      const foundUserById = await userPrismaRepository.getByID('1')
 
       vitest.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce(anUser.withEmail('email@email.com').build())
-      const foundUserByEmail = await userPrismaRepository.findByEmail('email@email.com')
+      const foundUserByEmail = await userPrismaRepository.getByEmail('email@email.com')
 
       vitest.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce(anUser.withUsername('user_name').build())
-      const foundUserByUsername = await userPrismaRepository.findByUsername('user_name')
+      const foundUserByUsername = await userPrismaRepository.getByUsername('user_name')
 
       expect(foundUserById).toBeInstanceOf(User)
       expect(foundUserByEmail).toBeInstanceOf(User)
@@ -140,9 +140,9 @@ describe('UserPrismaRepository tests', () => {
       const userPrismaRepository = new UserPrismaRepository(prisma)
 
       vitest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null)
-      const foundUserById = await userPrismaRepository.findByID('1')
-      const foundUserByEmail = await userPrismaRepository.findByEmail('email@email.com')
-      const foundUserByUsername = await userPrismaRepository.findByUsername('user_name')
+      const foundUserById = await userPrismaRepository.getByID('1')
+      const foundUserByEmail = await userPrismaRepository.getByEmail('email@email.com')
+      const foundUserByUsername = await userPrismaRepository.getByUsername('user_name')
 
       expect(foundUserById).toBeNull()
       expect(foundUserByEmail).toBeNull()
@@ -154,9 +154,9 @@ describe('UserPrismaRepository tests', () => {
 
       vitest.spyOn(prisma.user, 'findUnique').mockRejectedValue(new Error())
 
-      await expect(userPrismaRepository.findByID('1')).rejects.toThrowError()
-      await expect(userPrismaRepository.findByEmail('email@email.com')).rejects.toThrowError()
-      await expect(userPrismaRepository.findByUsername('user_name')).rejects.toThrowError()
+      await expect(userPrismaRepository.getByID('1')).rejects.toThrowError()
+      await expect(userPrismaRepository.getByEmail('email@email.com')).rejects.toThrowError()
+      await expect(userPrismaRepository.getByUsername('user_name')).rejects.toThrowError()
     })
   })
 
