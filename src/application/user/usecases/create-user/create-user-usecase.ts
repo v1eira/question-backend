@@ -32,13 +32,13 @@ export default class CreateUserUsecase implements CreateUserUsecaseInterface {
   }
 
   private async checkIfUserAlreadyExists (input: CreateUserInputDTO): Promise<void> {
-    let findUser = await this.userRepository.findByUsername(input.username)
-    if (findUser !== null) {
+    let getUser = await this.userRepository.getByUsername(input.username)
+    if (getUser !== null) {
       throw new ConflictError('Username already in use')
     }
 
-    findUser = await this.userRepository.findByEmail(input.email)
-    if (findUser !== null) {
+    getUser = await this.userRepository.getByEmail(input.email)
+    if (getUser !== null) {
       throw new ConflictError('Email already in use')
     }
   }

@@ -63,12 +63,12 @@ describe('QuestionPrismaRepository tests', () => {
     })
   })
 
-  describe('Find Question tests', () => {
-    it('Should find a question', async () => {
+  describe('Get Question tests', () => {
+    it('Should get a question', async () => {
       const questionPrismaRepository = new QuestionPrismaRepository(prisma)
 
       vitest.spyOn(prisma.question, 'findUnique').mockResolvedValueOnce(aQuestion.withId('1').build())
-      const foundQuestion = await questionPrismaRepository.findByID('1')
+      const foundQuestion = await questionPrismaRepository.getByID('1')
 
       expect(foundQuestion).toBeInstanceOf(Question)
       expect(foundQuestion).toHaveProperty('id', '1')
@@ -78,7 +78,7 @@ describe('QuestionPrismaRepository tests', () => {
       const questionPrismaRepository = new QuestionPrismaRepository(prisma)
 
       vitest.spyOn(prisma.question, 'findUnique').mockResolvedValue(null)
-      const foundQuestion = await questionPrismaRepository.findByID('1')
+      const foundQuestion = await questionPrismaRepository.getByID('1')
 
       expect(foundQuestion).toBeNull()
     })
@@ -88,7 +88,7 @@ describe('QuestionPrismaRepository tests', () => {
 
       vitest.spyOn(prisma.question, 'findUnique').mockRejectedValue(new Error())
 
-      await expect(questionPrismaRepository.findByID('1')).rejects.toThrowError()
+      await expect(questionPrismaRepository.getByID('1')).rejects.toThrowError()
     })
   })
 

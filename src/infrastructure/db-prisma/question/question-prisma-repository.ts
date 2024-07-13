@@ -27,7 +27,7 @@ export default class QuestionPrismaRepository implements QuestionRepositoryInter
     })
   }
 
-  async findByID (id: string): Promise<Question | null> {
+  async getByID (id: string): Promise<Question | null> {
     const question = await this.prisma.question.findUnique({
       where: {
         id
@@ -36,7 +36,7 @@ export default class QuestionPrismaRepository implements QuestionRepositoryInter
     return question === null ? null : this.toQuestionEntity(question)
   }
 
-  async findRecipientQuestions (recipientId: string): Promise<Question[]> {
+  async getRecipientQuestions (recipientId: string): Promise<Question[]> {
     // TBD
     const questions = await this.prisma.question.findMany({
       where: {
@@ -46,7 +46,7 @@ export default class QuestionPrismaRepository implements QuestionRepositoryInter
     return questions.map(question => this.toQuestionEntity(question))
   }
 
-  async findAll (filters: QuestionFilters): Promise<Question[]> {
+  async getAll (filters: QuestionFilters): Promise<Question[]> {
     // TBD
     const questions = await this.prisma.question.findMany({
       where: {

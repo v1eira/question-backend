@@ -9,7 +9,7 @@ export default class DeleteAnswerUseCase implements DeleteAnswerUseCaseInterface
   ) {}
 
   async execute (input: DeleteAnswerInputDTO): Promise<void> {
-    const answer = await this.answerRepository.findByID(input.id)
+    const answer = await this.answerRepository.getByID(input.id)
     if (answer == null) {
       throw new NotFoundError('Answer not found')
     }

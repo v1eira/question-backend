@@ -63,13 +63,13 @@ describe('AnswerPrismaRepository tests', () => {
     })
   })
 
-  describe('Find Answer tests', () => {
-    it('Should find a answer', async () => {
+  describe('Get Answer tests', () => {
+    it('Should get a answer', async () => {
       const answerPrismaRepository = new AnswerPrismaRepository(prisma)
 
       vitest.spyOn(prisma.answer, 'findUnique').mockResolvedValue(aAnswer.withId('1').build())
-      const foundAnswerById = await answerPrismaRepository.findByID('1')
-      const foundAnswerByQuestionId = await answerPrismaRepository.findByQuestionID('2')
+      const foundAnswerById = await answerPrismaRepository.getByID('1')
+      const foundAnswerByQuestionId = await answerPrismaRepository.getByQuestionID('2')
 
       expect(foundAnswerById).toBeInstanceOf(Answer)
       expect(foundAnswerByQuestionId).toBeInstanceOf(Answer)
@@ -82,8 +82,8 @@ describe('AnswerPrismaRepository tests', () => {
       const answerPrismaRepository = new AnswerPrismaRepository(prisma)
 
       vitest.spyOn(prisma.answer, 'findUnique').mockResolvedValue(null)
-      const foundAnswerById = await answerPrismaRepository.findByID('222')
-      const foundAnswerByQuestionId = await answerPrismaRepository.findByQuestionID('333')
+      const foundAnswerById = await answerPrismaRepository.getByID('222')
+      const foundAnswerByQuestionId = await answerPrismaRepository.getByQuestionID('333')
 
       expect(foundAnswerById).toBeNull()
       expect(foundAnswerByQuestionId).toBeNull()
@@ -94,8 +94,8 @@ describe('AnswerPrismaRepository tests', () => {
 
       vitest.spyOn(prisma.answer, 'findUnique').mockRejectedValue(new Error())
 
-      await expect(answerPrismaRepository.findByID('1')).rejects.toThrowError()
-      await expect(answerPrismaRepository.findByQuestionID('1')).rejects.toThrowError()
+      await expect(answerPrismaRepository.getByID('1')).rejects.toThrowError()
+      await expect(answerPrismaRepository.getByQuestionID('1')).rejects.toThrowError()
     })
   })
 

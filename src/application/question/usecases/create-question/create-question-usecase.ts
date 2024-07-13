@@ -20,12 +20,12 @@ export default class CreateQuestionUsecase implements CreateQuestionUseCaseInter
       throw new InvalidRequestError('Source and target users should be different')
     }
 
-    const fromUser = await this.userRepository.findByID(input.fromId)
+    const fromUser = await this.userRepository.getByID(input.fromId)
     if (fromUser === null) {
       throw new NotFoundError('Source user not found')
     }
 
-    const toUser = await this.userRepository.findByID(input.toId)
+    const toUser = await this.userRepository.getByID(input.toId)
     if (toUser === null) {
       throw new NotFoundError('Target user not found')
     }
