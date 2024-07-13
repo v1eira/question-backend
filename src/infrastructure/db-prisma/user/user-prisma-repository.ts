@@ -81,7 +81,7 @@ export default class UserPrismaRepository implements UserRepositoryInterface {
 
   async getAll (): Promise<User[]> {
     // TBD
-    const users = await this.prisma.user.getMany()
+    const users = await this.prisma.user.findMany()
     return users.map((user) => this.toUserEntity(user))
   }
 

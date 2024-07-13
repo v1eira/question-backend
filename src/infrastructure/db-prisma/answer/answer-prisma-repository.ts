@@ -46,7 +46,7 @@ export default class AnswerPrismaRepository implements AnswerRepositoryInterface
 
   async getAll (filters: AnswerFilters): Promise<Answer[]> {
     // TBD
-    const answers = await this.prisma.answer.getMany({
+    const answers = await this.prisma.answer.findMany({
       where: {
         responderId: filters.responderId,
         content: {
