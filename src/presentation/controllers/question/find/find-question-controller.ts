@@ -1,8 +1,9 @@
 import type FindAnsweredQuestionUseCaseInterface from '../../../../application/question/usecases/find-answered-question/find-answered-question.interface'
 import makeHttpErrorResponse from '../../../helpers/http-error-response'
+import { type Controller } from '../../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
 
-export default class FindQuestionController {
+export default class FindQuestionController implements Controller {
   private readonly findQuestionUseCase: FindAnsweredQuestionUseCaseInterface
 
   constructor (findQuestionUseCase: FindAnsweredQuestionUseCaseInterface) {

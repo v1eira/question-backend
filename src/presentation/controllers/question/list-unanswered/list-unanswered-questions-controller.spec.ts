@@ -19,7 +19,7 @@ describe('ListUnansweredQuestionsController', () => {
 
   const httpRequest = {
     params: {
-      userId: 'any_id'
+      recipientId: 'any_id'
     }
   }
 
@@ -45,7 +45,7 @@ describe('ListUnansweredQuestionsController', () => {
       .mockImplementationOnce(async () => { return await Promise.resolve(output) })
 
     const response = await listUnansweredQuestionsController.handle(httpRequest)
-    expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.userId })
+    expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.recipientId })
     expect(queryHandler.execute).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual(output)
@@ -57,7 +57,7 @@ describe('ListUnansweredQuestionsController', () => {
       .mockImplementationOnce(async () => { throw new NotFoundError('User not found') })
 
     const response = await listUnansweredQuestionsController.handle(httpRequest)
-    expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.userId })
+    expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.recipientId })
     expect(queryHandler.execute).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(404)
     expect(response.body).toHaveProperty('error')
@@ -70,7 +70,7 @@ describe('ListUnansweredQuestionsController', () => {
       .mockImplementationOnce(async () => { throw new Error('Unexpected error') })
 
     const response = await listUnansweredQuestionsController.handle(httpRequest)
-    expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.userId })
+    expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.recipientId })
     expect(queryHandler.execute).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(500)
     expect(response.body).toHaveProperty('error')
