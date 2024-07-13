@@ -5,6 +5,7 @@ import type UserRepositoryInterface from '../../../../domain/user/repository/use
 import type QuestionRepositoryInterface from '../../../../domain/question/repository/question-repository.interface'
 import QuestionBuilder from '../../../../domain/question/entity/question-data-builder'
 import UserBuilder from '../../../../domain/user/entity/user-data-builder'
+import AnswerBuilder from '../../../../domain/answer/entity/answer-data-builder'
 
 const AnswerMockRepository = (): AnswerRepositoryInterface => {
   return {
@@ -46,6 +47,7 @@ describe('Create Answer Usecase tests', () => {
 
   const aQuestion = new QuestionBuilder()
   const anUser = new UserBuilder()
+  const anAnswer = new AnswerBuilder()
 
   afterEach(() => {
     vitest.clearAllMocks()
@@ -79,6 +81,19 @@ describe('Create Answer Usecase tests', () => {
       _likes: 0,
       _createdAt: expect.any(Date)
     })
+  })
+
+  it('Should throw an error if answer already exists', async () => {
+    const input = {
+      content: 'this is an answer',
+      responderId: 'responderID',
+      questionId: 'questionID'
+    }
+
+    const findAnswerSpy = vitest.spyOn(answerRepository, 'findByQuestionID')
+    findAnswerSpy.mockReturnValueOnce(Promise.resolve(anAnswer.withId('answerID').build()))
+
+    await expect(createAnswerUsecase.execute(input)).rejects.toThrow('Answer already exists')
   })
 
   it('Should throw an error if question not found', async () => {

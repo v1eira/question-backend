@@ -1,8 +1,9 @@
 import type CreateAnswerUsecaseInterface from '../../../../application/answer/usecases/create-answer/create-answer-usecase.interface'
 import makeHttpErrorResponse from '../../../helpers/http-error-response'
+import { type Controller } from '../../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
 
-export default class CreateAnswerController {
+export default class CreateAnswerController implements Controller {
   private readonly createAnswerUseCase: CreateAnswerUsecaseInterface
 
   constructor (createAnswerUseCase: CreateAnswerUsecaseInterface) {

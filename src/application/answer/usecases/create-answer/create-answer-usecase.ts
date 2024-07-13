@@ -15,6 +15,10 @@ export default class CreateAnswerUseCase implements CreateAnswerUsecaseInterface
   ) {}
 
   async execute (input: CreateAnswerInputDTO): Promise<void> {
+    const answerExists = await this.answerRepository.findByQuestionID(input.questionId)
+    if (answerExists != null) {
+      throw new ConflictError('Answer already exists')
+    }
     const question = await this.questionRepository.findByID(input.questionId)
     if (question == null) {
       throw new NotFoundError('Question not found')
