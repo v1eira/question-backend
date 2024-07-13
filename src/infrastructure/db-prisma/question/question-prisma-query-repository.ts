@@ -9,7 +9,7 @@ export default class QuestionPrismaQueryRepository implements QuestionQueryInter
   listAnsweredQuestions: (params: SearchParams) => Promise<AnsweredQuestion[]>
 
   async listUserUnansweredQuestions (userId: string): Promise<QuestionWithAsker[]> {
-    const questions = await this.prisma.question.findMany({
+    const questions = await this.prisma.question.getMany({
       where: {
         recipientId: userId,
         Answer: {

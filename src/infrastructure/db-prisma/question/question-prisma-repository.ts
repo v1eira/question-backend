@@ -38,7 +38,7 @@ export default class QuestionPrismaRepository implements QuestionRepositoryInter
 
   async getRecipientQuestions (recipientId: string): Promise<Question[]> {
     // TBD
-    const questions = await this.prisma.question.findMany({
+    const questions = await this.prisma.question.getMany({
       where: {
         recipientId
       }
@@ -48,7 +48,7 @@ export default class QuestionPrismaRepository implements QuestionRepositoryInter
 
   async getAll (filters: QuestionFilters): Promise<Question[]> {
     // TBD
-    const questions = await this.prisma.question.findMany({
+    const questions = await this.prisma.question.getMany({
       where: {
         askerId: {
           in: filters.from
