@@ -1,9 +1,9 @@
 model Relationship {
   id        String   @id
   name      String
-  from      User     @relation("from_user", fields: [fromId], references: [id])
+  from      User     @relation("from_user", fields: [fromId], references: [id], onDelete: Cascade)
   fromId    String
-  to        User     @relation("to_user", fields: [toId], references: [id])
+  to        User     @relation("to_user", fields: [toId], references: [id], onDelete: Cascade)
   toId      String
   status    String
   createdAt DateTime @default(now())

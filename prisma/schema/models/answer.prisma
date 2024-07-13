@@ -1,9 +1,9 @@
 model Answer {
   id          String    @id
   content     String
-  responder   User      @relation(fields: [responderId], references: [id])
+  responder   User      @relation(fields: [responderId], references: [id], onDelete: Cascade)
   responderId String
-  question    Question  @relation(fields: [questionId], references: [id])
+  question    Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId  String    @unique
   createdAt   DateTime  @default(now())
   deletedAt   DateTime?
