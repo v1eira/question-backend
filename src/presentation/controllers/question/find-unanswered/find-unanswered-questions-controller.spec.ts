@@ -1,17 +1,17 @@
 import { vitest, describe, afterEach, it, expect } from 'vitest'
-import type ListUnansweredQuestionsQueryHandlerInterface from '../../../../application/question/query-handlers/list-unanswered-questions/list-unanswered-questions.interface'
-import ListUnansweredQuestionsController from './list-unanswered-questions-controller'
+import type FindUnansweredQuestionsQueryHandlerInterface from '../../../../application/question/query-handlers/find-unanswered-questions/find-unanswered-questions.interface'
+import FindUnansweredQuestionsController from './find-unanswered-questions-controller'
 import { NotFoundError } from '../../../../domain/error/errors'
 
-const MockQueryHandler = (): ListUnansweredQuestionsQueryHandlerInterface => {
+const MockQueryHandler = (): FindUnansweredQuestionsQueryHandlerInterface => {
   return {
     execute: vitest.fn()
   }
 }
 
-describe('ListUnansweredQuestionsController', () => {
+describe('FindUnansweredQuestionsController', () => {
   const queryHandler = MockQueryHandler()
-  const listUnansweredQuestionsController = new ListUnansweredQuestionsController(queryHandler)
+  const findUnansweredQuestionsController = new FindUnansweredQuestionsController(queryHandler)
 
   afterEach(() => {
     vitest.clearAllMocks()
@@ -39,12 +39,12 @@ describe('ListUnansweredQuestionsController', () => {
     ]
   }
 
-  it('Should return a list of unanswered questions', async () => {
+  it('Should return a find of unanswered questions', async () => {
     vitest
       .spyOn(queryHandler, 'execute')
       .mockImplementationOnce(async () => { return await Promise.resolve(output) })
 
-    const response = await listUnansweredQuestionsController.handle(httpRequest)
+    const response = await findUnansweredQuestionsController.handle(httpRequest)
     expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.recipientId })
     expect(queryHandler.execute).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(200)
@@ -56,7 +56,7 @@ describe('ListUnansweredQuestionsController', () => {
       .spyOn(queryHandler, 'execute')
       .mockImplementationOnce(async () => { throw new NotFoundError('User not found') })
 
-    const response = await listUnansweredQuestionsController.handle(httpRequest)
+    const response = await findUnansweredQuestionsController.handle(httpRequest)
     expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.recipientId })
     expect(queryHandler.execute).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(404)
@@ -69,7 +69,7 @@ describe('ListUnansweredQuestionsController', () => {
       .spyOn(queryHandler, 'execute')
       .mockImplementationOnce(async () => { throw new Error('Unexpected error') })
 
-    const response = await listUnansweredQuestionsController.handle(httpRequest)
+    const response = await findUnansweredQuestionsController.handle(httpRequest)
     expect(queryHandler.execute).toHaveBeenCalledWith({ recipientId: httpRequest.params.recipientId })
     expect(queryHandler.execute).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(500)

@@ -1,22 +1,22 @@
 import type UserRepositoryInterface from '../../../../domain/user/repository/user-repository.interface'
 import { type QuestionQueryInterface } from '../../../../domain/question/query/question-query.interface'
-import { type ListUnansweredQuestionsInputDto, type ListUnansweredQuestionsOutputDto } from './list-unanswered-questions-dto'
-import type ListUnansweredQuestionsQueryHandlerInterface from './list-unanswered-questions.interface'
+import { type FindUnansweredQuestionsInputDto, type FindUnansweredQuestionsOutputDto } from './find-unanswered-questions-dto'
+import type FindUnansweredQuestionsQueryHandlerInterface from './find-unanswered-questions.interface'
 import { NotFoundError } from '../../../../domain/error/errors'
 
-export default class ListUnansweredQuestionsQueryHandler implements ListUnansweredQuestionsQueryHandlerInterface {
+export default class FindUnansweredQuestionsQueryHandler implements FindUnansweredQuestionsQueryHandlerInterface {
   constructor (
     private readonly userRepository: UserRepositoryInterface,
     private readonly questionQuery: QuestionQueryInterface
   ) {}
 
-  async execute (input: ListUnansweredQuestionsInputDto): Promise<ListUnansweredQuestionsOutputDto> {
+  async execute (input: FindUnansweredQuestionsInputDto): Promise<FindUnansweredQuestionsOutputDto> {
     const recipient = await this.userRepository.getByID(input.recipientId)
     if (recipient === null) {
       throw new NotFoundError('Recipient not found')
     }
 
-    const unansweredQuestions = await this.questionQuery.listUserUnansweredQuestions(recipient.id)
+    const unansweredQuestions = await this.questionQuery.findUserUnansweredQuestions(recipient.id)
 
     return {
       questions: unansweredQuestions.map((q) => ({

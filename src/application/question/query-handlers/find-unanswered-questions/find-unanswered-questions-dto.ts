@@ -1,8 +1,8 @@
-export interface ListUnansweredQuestionsInputDto {
+export interface FindUnansweredQuestionsInputDto {
   recipientId: string
 }
 
-export interface ListUnansweredQuestionsOutputDto {
+export interface FindUnansweredQuestionsOutputDto {
   questions: Array<{
     id: string
     content: string

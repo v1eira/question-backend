@@ -22,6 +22,6 @@ export interface SearchParams {
 }
 
 export interface QuestionQueryInterface {
-  listAnsweredQuestions: (params: SearchParams) => Promise<AnsweredQuestion[]>
-  listUserUnansweredQuestions: (userId: string) => Promise<QuestionWithAsker[]>
+  findAnsweredQuestions: (params: SearchParams) => Promise<AnsweredQuestion[]>
+  findUserUnansweredQuestions: (userId: string) => Promise<QuestionWithAsker[]>
 }
