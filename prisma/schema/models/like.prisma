@@ -1,8 +1,8 @@
 model Like {
   id        String    @id
-  answer    Answer    @relation(fields: [answerId], references: [id])
+  answer    Answer    @relation(fields: [answerId], references: [id], onDelete: Cascade)
   answerId  String
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   createdAt DateTime  @default(now())
   deletedAt DateTime?

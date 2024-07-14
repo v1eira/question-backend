@@ -1,9 +1,9 @@
 model Question {
   id          String    @id
   content     String
-  asker       User      @relation("question_asker", fields: [askerId], references: [id])
+  asker       User      @relation("question_asker", fields: [askerId], references: [id], onDelete: Cascade)
   askerId     String
-  recipient   User      @relation("question_recipient", fields: [recipientId], references: [id])
+  recipient   User      @relation("question_recipient", fields: [recipientId], references: [id], onDelete: Cascade)
   recipientId String
   createdAt   DateTime  @default(now())
   deletedAt   DateTime?

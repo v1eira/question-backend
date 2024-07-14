@@ -1,8 +1,9 @@
 import type DeleteAnswerUseCaseInterface from '../../../../application/answer/usecases/delete-answer/delete-answer-usecase.interface'
 import makeHttpErrorResponse from '../../../helpers/http-error-response'
+import { type Controller } from '../../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
 
-export default class DeleteAnswerController {
+export default class DeleteAnswerController implements Controller {
   private readonly deleteAnswerUseCase: DeleteAnswerUseCaseInterface
 
   constructor (deleteAnswerUseCase: DeleteAnswerUseCaseInterface) {

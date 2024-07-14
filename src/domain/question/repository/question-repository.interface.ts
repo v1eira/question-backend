@@ -8,8 +8,8 @@ export interface QuestionFilters {
 
 export default interface QuestionRepositoryInterface {
   create: (question: Question) => Promise<void>
-  findByID: (id: string) => Promise<Question | null>
-  findRecipientQuestions: (recipientId: string) => Promise<Question[]>
-  findAll: (filters: QuestionFilters) => Promise<Question[]>
+  getByID: (id: string) => Promise<Question | null>
+  getRecipientQuestions: (recipientId: string) => Promise<Question[]>
+  getAll: (filters: QuestionFilters) => Promise<Question[]>
   delete: (id: string) => Promise<void>
 }

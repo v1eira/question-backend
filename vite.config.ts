@@ -4,7 +4,8 @@ export default defineConfig({
   test: {
     cache: false,
     coverage: {
-      provider: 'v8'
+      provider: 'v8',
+      exclude: ['**/main/**', '**/prisma/**']
     }
   }
 })

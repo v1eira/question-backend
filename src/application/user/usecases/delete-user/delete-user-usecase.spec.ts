@@ -7,10 +7,10 @@ const MockRepository = (): UserRepositoryInterface => {
   return {
     create: vitest.fn(),
     update: vitest.fn(),
-    findByEmail: vitest.fn(),
-    findByUsername: vitest.fn(),
-    findAll: vitest.fn(),
-    findByID: vitest.fn().mockImplementation(
+    getByEmail: vitest.fn(),
+    getByUsername: vitest.fn(),
+    getAll: vitest.fn(),
+    getByID: vitest.fn().mockImplementation(
       (id: string) => id === 'deleteUserID'
         ? new UserBuilder().withId(id).build()
         : null
@@ -31,8 +31,8 @@ describe('DeleteUserUsecase', () => {
 
     await deleteUserUsecase.execute(deleteUserInput)
 
-    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByID).toHaveBeenCalledWith('deleteUserID')
+    expect(userRepository.getByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByID).toHaveBeenCalledWith('deleteUserID')
     expect(userRepository.delete).toHaveBeenCalledTimes(1)
     expect(userRepository.delete).toHaveBeenCalledWith('deleteUserID')
   })
@@ -42,8 +42,8 @@ describe('DeleteUserUsecase', () => {
 
     await expect(deleteUserUsecase.execute(deleteUserInput)).rejects.toThrow('User not found')
 
-    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByID).toHaveBeenCalledWith('123')
+    expect(userRepository.getByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByID).toHaveBeenCalledWith('123')
     expect(userRepository.delete).not.toHaveBeenCalled()
   })
 })

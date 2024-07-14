@@ -7,8 +7,6 @@ services:
     container_name: question_api
     depends_on:
       - db
-    volumes:
-      - ./app:/usr/src/app
     ports:
       - 3000:3000
     expose:
@@ -32,13 +30,8 @@ services:
       - 5432:5432
     expose:
       - "5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     networks:
       - question_network
-
-volumes:
-  postgres_data:
 
 networks:
   question_network:

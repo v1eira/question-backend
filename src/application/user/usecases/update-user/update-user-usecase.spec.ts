@@ -19,18 +19,18 @@ const MockRepository = (): UserRepositoryInterface => {
   return {
     create: vitest.fn(),
     update: vitest.fn(),
-    findByID: vitest.fn().mockImplementation(id =>
+    getByID: vitest.fn().mockImplementation(id =>
       id === '1'
         ? anUser.withId('1').build()
         : null
     ),
-    findByEmail: vitest.fn(),
-    findByUsername: vitest.fn().mockImplementation(username =>
+    getByEmail: vitest.fn(),
+    getByUsername: vitest.fn().mockImplementation(username =>
       username === 'usernameAlreadyExists'
         ? anUser.withId('randomID').withUsername('usernameAlreadyExists').build()
         : null
     ),
-    findAll: vitest.fn(),
+    getAll: vitest.fn(),
     delete: vitest.fn()
   }
 }
@@ -57,10 +57,10 @@ describe('Update User Usecase tests', () => {
 
     await updateUserUsecase.execute(updateUserInput)
 
-    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByID).toHaveBeenCalledWith('1')
-    expect(userRepository.findByUsername).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByUsername).toHaveBeenCalledWith('updatedUser01')
+    expect(userRepository.getByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByID).toHaveBeenCalledWith('1')
+    expect(userRepository.getByUsername).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByUsername).toHaveBeenCalledWith('updatedUser01')
     expect(userRepository.update).toHaveBeenCalledTimes(1)
     expect(userRepository.update).toHaveBeenCalledWith(expect.objectContaining({
       _id: '1',
@@ -81,9 +81,9 @@ describe('Update User Usecase tests', () => {
 
     await updateUserUsecase.execute(updateUserInput)
 
-    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByID).toHaveBeenCalledWith('1')
-    expect(userRepository.findByUsername).not.toHaveBeenCalled()
+    expect(userRepository.getByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByID).toHaveBeenCalledWith('1')
+    expect(userRepository.getByUsername).not.toHaveBeenCalled()
     expect(userRepository.update).toHaveBeenCalledTimes(1)
     expect(userRepository.update).toHaveBeenCalledWith(expect.objectContaining({
       _id: '1',
@@ -105,9 +105,9 @@ describe('Update User Usecase tests', () => {
 
     await expect(updateUserUsecase.execute(updateUserInput)).rejects.toThrow('User not found')
 
-    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByID).toHaveBeenCalledWith('2')
-    expect(userRepository.findByUsername).not.toHaveBeenCalled()
+    expect(userRepository.getByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByID).toHaveBeenCalledWith('2')
+    expect(userRepository.getByUsername).not.toHaveBeenCalled()
     expect(userRepository.update).not.toHaveBeenCalled()
   })
 
@@ -125,9 +125,9 @@ describe('Update User Usecase tests', () => {
 
     await expect(updateUserUsecase.execute(updateUserInput)).rejects.toThrow('Username already in use')
 
-    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByUsername).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByUsername).toHaveBeenCalledWith('usernameAlreadyExists')
+    expect(userRepository.getByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByUsername).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByUsername).toHaveBeenCalledWith('usernameAlreadyExists')
     expect(userRepository.update).not.toHaveBeenCalled()
   })
 
@@ -145,8 +145,8 @@ describe('Update User Usecase tests', () => {
 
     await expect(updateUserUsecase.execute(updateUserInput)).rejects.toThrow('Wrong current password')
 
-    expect(userRepository.findByID).toHaveBeenCalledTimes(1)
-    expect(userRepository.findByUsername).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByID).toHaveBeenCalledTimes(1)
+    expect(userRepository.getByUsername).toHaveBeenCalledTimes(1)
     expect(userRepository.update).not.toHaveBeenCalled()
   })
 })

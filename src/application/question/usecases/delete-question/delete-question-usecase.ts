@@ -11,7 +11,7 @@ export default class DeleteQuestionUseCase implements DeleteQuestionUseCaseInter
   }
 
   async execute (input: DeleteQuestionInputDTO): Promise<void> {
-    const question = await this.questionRepository.findByID(input.id)
+    const question = await this.questionRepository.getByID(input.id)
     if (question === null) {
       throw new NotFoundError('Question not found')
     }

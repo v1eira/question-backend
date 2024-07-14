@@ -11,7 +11,7 @@ export default class DeleteUserUsecase implements DeleteUserUsecaseInterface {
   }
 
   async execute (input: DeleteUserInputDTO): Promise<void> {
-    const user = await this.userRepository.findByID(input.id)
+    const user = await this.userRepository.getByID(input.id)
     if (user === null) {
       throw new NotFoundError('User not found')
     }
