@@ -79,7 +79,8 @@ describe('Create Answer Usecase tests', () => {
       _responderId: input.responderId,
       _questionId: input.questionId,
       _likes: 0,
-      _createdAt: expect.any(Date)
+      _createdAt: expect.any(Date),
+      _deletedAt: null
     })
   })
 

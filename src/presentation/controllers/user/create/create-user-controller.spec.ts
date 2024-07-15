@@ -2,16 +2,23 @@ import { afterEach, describe, expect, it, vitest } from 'vitest'
 import CreateUserController from './create-user-controller'
 import type CreateUserUsecaseInterface from '../../../../application/user/usecases/create-user/create-user-usecase.interface'
 import { ConflictError } from '../../../../domain/error/errors'
+import { type Validation } from '../../../protocols/validation'
 
 const MockUseCase = (): CreateUserUsecaseInterface => {
   return {
     execute: vitest.fn()
   }
 }
+const MockValidation = (): Validation => {
+  return {
+    validate: vitest.fn()
+  }
+}
 
 describe('CreateUserController', () => {
   const usecase = MockUseCase()
-  const createUserController = new CreateUserController(usecase)
+  const validation = MockValidation()
+  const createUserController = new CreateUserController(usecase, validation)
 
   afterEach(() => {
     vitest.clearAllMocks()

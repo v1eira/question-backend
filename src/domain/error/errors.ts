@@ -18,3 +18,10 @@ export class InvalidRequestError extends Error {
     this.name = 'InvalidRequestError'
   }
 }
+
+export class ValidationError extends Error {
+  constructor (message: string) {
+    super(message)
+    this.name = 'ValidationError'
+  }
+}

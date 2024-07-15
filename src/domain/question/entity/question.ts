@@ -4,6 +4,7 @@ interface QuestionProps {
   askerId: string
   recipientId: string
   createdAt?: Date
+  deletedAt?: Date
 }
 
 export class Question {
@@ -12,7 +13,7 @@ export class Question {
   private readonly _askerId: string
   private readonly _recipientId: string
   private _createdAt: Date
-  private _deletedAt: Date
+  private _deletedAt: Date | null
 
   constructor (props: QuestionProps) {
     this._id = props.id
@@ -20,6 +21,7 @@ export class Question {
     this._askerId = props.askerId
     this._recipientId = props.recipientId
     this._createdAt = props.createdAt ?? new Date()
+    this._deletedAt = props.deletedAt ?? null
     this.validate()
   }
 
@@ -47,7 +49,7 @@ export class Question {
     this._createdAt = createdAt
   }
 
-  get deletedAt (): Date {
+  get deletedAt (): Date | null {
     return this._deletedAt
   }
 

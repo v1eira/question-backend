@@ -10,6 +10,8 @@ interface UserProps {
   followersCount?: number
   followingCount?: number
   createdAt?: Date
+  updatedAt?: Date
+  deletedAt?: Date
 }
 
 export class User {
@@ -24,8 +26,8 @@ export class User {
   private _followersCount: number
   private _followingCount: number
   private _createdAt: Date
-  private _updatedAt: Date
-  private _deletedAt: Date
+  private _updatedAt: Date | null
+  private _deletedAt: Date | null
 
   constructor (props: UserProps) {
     this._id = props.id
@@ -39,6 +41,8 @@ export class User {
     this._followersCount = props.followersCount ?? 0
     this._followingCount = props.followingCount ?? 0
     this._createdAt = props.createdAt ?? new Date()
+    this._updatedAt = props.updatedAt ?? null
+    this._deletedAt = props.deletedAt ?? null
     this.validate()
   }
 
@@ -132,7 +136,7 @@ export class User {
     this._createdAt = createdAt
   }
 
-  get updatedAt (): Date {
+  get updatedAt (): Date | null {
     return this._updatedAt
   }
 
@@ -140,7 +144,7 @@ export class User {
     this._updatedAt = updatedAt
   }
 
-  get deletedAt (): Date {
+  get deletedAt (): Date | null {
     return this._deletedAt
   }
 

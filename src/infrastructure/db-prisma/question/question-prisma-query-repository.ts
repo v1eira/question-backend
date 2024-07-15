@@ -6,7 +6,9 @@ import { User } from '../../../domain/user/entity/user'
 export default class QuestionPrismaQueryRepository implements QuestionQueryInterface {
   constructor (private readonly prisma: PrismaClient) {}
 
-  findAnsweredQuestions: (params: SearchParams) => Promise<AnsweredQuestion[]>
+  async findAnsweredQuestions (params: SearchParams): Promise<AnsweredQuestion[]> {
+    return []
+  }
 
   async findUserUnansweredQuestions (userId: string): Promise<QuestionWithAsker[]> {
     const questions = await this.prisma.question.findMany({

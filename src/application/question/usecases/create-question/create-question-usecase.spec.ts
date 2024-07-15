@@ -58,7 +58,8 @@ describe('Create Question Usecase tests', async () => {
       _content: 'How are u?',
       _askerId: 'fromID',
       _recipientId: 'toID',
-      _createdAt: expect.any(Date)
+      _createdAt: expect.any(Date),
+      _deletedAt: null
     })
   })
 

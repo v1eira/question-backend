@@ -2,12 +2,15 @@ import type CreateUserUsecaseInterface from '../../../../application/user/usecas
 import makeHttpErrorResponse from '../../../helpers/http-error-response'
 import { type Controller } from '../../../protocols/controller'
 import { type HttpRequest, type HttpResponse } from '../../../protocols/http'
+import { type Validation } from '../../../protocols/validation'
 
 export default class CreateUserController implements Controller {
   private readonly createUserUseCase: CreateUserUsecaseInterface
+  private readonly validation: Validation
 
-  constructor (createUserUseCase: CreateUserUsecaseInterface) {
+  constructor (createUserUseCase: CreateUserUsecaseInterface, validation: Validation) {
     this.createUserUseCase = createUserUseCase
+    this.validation = validation
   }
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
@@ -20,6 +23,9 @@ export default class CreateUserController implements Controller {
         summary: request.body.summary,
         location: request.body.location
       }
+
+      await this.validation.validate(input)
+
       await this.createUserUseCase.execute(input)
       return {
         statusCode: 201,

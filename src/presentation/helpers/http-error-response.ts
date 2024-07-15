@@ -5,7 +5,8 @@ export default function makeHttpErrorResponse (error: Error): HttpResponse {
     InvalidRequestError: { statusCode: 400, body: { error: error.message } },
     NotFoundError: { statusCode: 404, body: { error: error.message } },
     ConflictError: { statusCode: 409, body: { error: error.message } },
-    ServerError: { statusCode: 500, body: { error: 'Internal Server Error' } }
+    ServerError: { statusCode: 500, body: { error: 'Internal Server Error' } },
+    ValidationError: { statusCode: 400, body: { error: error.message } }
   }
 
   return errorResponse[error.name] ?? errorResponse.ServerError

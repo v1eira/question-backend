@@ -55,7 +55,9 @@ describe('Create User Usecase tests', () => {
       _profileLocked: false,
       _followersCount: 0,
       _followingCount: 0,
-      _createdAt: expect.any(Date)
+      _createdAt: expect.any(Date),
+      _updatedAt: null,
+      _deletedAt: null
     })
   })
 
