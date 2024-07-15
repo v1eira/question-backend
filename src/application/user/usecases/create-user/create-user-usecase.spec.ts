@@ -56,7 +56,7 @@ describe('Create User Usecase tests', () => {
       _followersCount: 0,
       _followingCount: 0,
       _createdAt: expect.any(Date),
-      _updatedAt: null,
+      _updatedAt: expect.any(Date),
       _deletedAt: null
     })
   })

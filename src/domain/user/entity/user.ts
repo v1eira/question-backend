@@ -26,7 +26,7 @@ export class User {
   private _followersCount: number
   private _followingCount: number
   private _createdAt: Date
-  private _updatedAt: Date | null
+  private _updatedAt: Date
   private _deletedAt: Date | null
 
   constructor (props: UserProps) {
@@ -41,7 +41,7 @@ export class User {
     this._followersCount = props.followersCount ?? 0
     this._followingCount = props.followingCount ?? 0
     this._createdAt = props.createdAt ?? new Date()
-    this._updatedAt = props.updatedAt ?? null
+    this._updatedAt = props.updatedAt ?? this._createdAt
     this._deletedAt = props.deletedAt ?? null
     this.validate()
   }
@@ -136,7 +136,7 @@ export class User {
     this._createdAt = createdAt
   }
 
-  get updatedAt (): Date | null {
+  get updatedAt (): Date {
     return this._updatedAt
   }
 

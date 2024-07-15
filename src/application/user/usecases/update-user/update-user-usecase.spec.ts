@@ -5,10 +5,10 @@ import UpdateUserUsecase from './update-user-usecase'
 import { type UpdateUserInputDTO } from './update-user-dto'
 
 vitest.mock('bcrypt', () => ({
-  async compare (pass, hash): Promise<boolean> {
+  async compare (pass: string, hash: string): Promise<boolean> {
     return pass === 'correctPassword'
   },
-  async hash (pass, rounds): Promise<string> {
+  async hash (pass: string, rounds: number): Promise<string> {
     return pass
   }
 }))

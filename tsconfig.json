@@ -4,7 +4,7 @@
     "lib": ["ES2015", "DOM"],
     "strict": true /* Enable all strict type-checking options. */,
     "strictNullChecks": true,              /* Enable strict null checks. */
-    // "skipLibCheck": true,
+    "skipLibCheck": true,
     // "forceConsistentCasingInFileNames": true,
     // "resolveJsonModule": true,
     "paths": {
